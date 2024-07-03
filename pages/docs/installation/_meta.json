@@ -1,0 +1,15 @@
+{
+  "client": {
+    "title": "Client Setup",
+    "theme": {
+      "footer": false
+    }
+  },
+
+  "server": {
+    "title": "Server Setup",
+    "theme": {
+      "footer": false
+    }
+  }
+}
