@@ -17,6 +17,10 @@ export default function Home() {
       name: "Docs",
       link: "/docs/getting-started",
     },
+    {
+      name: "Playground",
+      link: "/playground",
+    },
   ];
   return (
     <>

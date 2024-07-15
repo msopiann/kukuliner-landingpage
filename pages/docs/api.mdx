@@ -19,26 +19,28 @@ GET /api/culinary
 **Response:**
 
 ```json
-[
-  {
-    "id": "1",
-    "name": "Sate Bandeng",
-    "description": "Sate Bandeng adalah masakan tradisional khas Banten, Indonesia. Sate Bandeng dibuat dari ikan bandeng yang dihilangkan durinya, dagingnya dibumbui dan dimasukkan kembali ke kulitnya, lalu ditusuk atau dijepit tusukan tangkai bambu, lalu dibakar di atas bara arang.",
-    "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/sate-bandeng-_shutterstock_1893274882.jpg",
-    "estimatePrice": "Rp25.000 - Rp40.000",
-    "lat": -6.120694599999999,
-    "lon": 106.1501611
-  },
-  {
-    "id": "2",
-    "name": "Nasi Goreng Kambing",
-    "description": "Nasi Goreng Kambing adalah hidangan nasi goreng khas Indonesia yang menggunakan daging kambing dan rempah-rempah.",
-    "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/nasi-goreng-kambing.jpg",
-    "estimatePrice": "Rp30.000 - Rp50.000",
-    "lat": -6.210694599999999,
-    "lon": 106.8501611
-  }
-]
+{
+  "listKuliner": [
+    {
+      "description": "Sate Bandeng adalah masakan tradisional khas Banten, Indonesia. Sate Bandeng dibuat dari ikan bandeng  yang dihilangkan durinya, dagingnya dibumbui dan dimasukkan kembali ke kulitnya, lalu ditusuk atau dijepit tusukan tangkai bambu, lalu dibakar di atas bara arang. ",
+      "estimatePrice": "Rp25.000 - Rp40.000",
+      "id": "1",
+      "lat": -6.120694599999999,
+      "lon": 106.1501611,
+      "nama": "Sate Bandeng",
+      "photoUrl": "https://storage.googleapis.com/img-culinary/sate-bandeng.jpg"
+    },
+    {
+      "description": "Pecak bandeng mulanya merupakan menu ikan bandeng yang dibakar lalu diberi sambal. Menu ini benar-benar gurih dengan tekstur daging yang lembut, dengan sensasi smokey dari proses pembakarannya.",
+      "estimatePrice": "Rp25.000 - Rp35.000",
+      "id": "2",
+      "lat": -6.1200252,
+      "lon": 106.1503437,
+      "nama": "Pecak Bandeng",
+      "photoUrl": "https://storage.googleapis.com/img-culinary/pecak-bandeng.jpg"
+    }
+  ]
+}
 ```
 
 ### 2. `getDataById`
@@ -59,13 +61,15 @@ GET /api/culinary/{id}
 
 ```json
 {
-  "id": "1",
-  "name": "Sate Bandeng",
-  "description": "Sate Bandeng adalah masakan tradisional khas Banten, Indonesia. Sate Bandeng dibuat dari ikan bandeng yang dihilangkan durinya, dagingnya dibumbui dan dimasukkan kembali ke kulitnya, lalu ditusuk atau dijepit tusukan tangkai bambu, lalu dibakar di atas bara arang.",
-  "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/sate-bandeng-_shutterstock_1893274882.jpg",
-  "estimatePrice": "Rp25.000 - Rp40.000",
-  "lat": -6.120694599999999,
-  "lon": 106.1501611
+  "listKuliner": {
+    "description": "Sate Bandeng adalah masakan tradisional khas Banten, Indonesia. Sate Bandeng dibuat dari ikan bandeng  yang dihilangkan durinya, dagingnya dibumbui dan dimasukkan kembali ke kulitnya, lalu ditusuk atau dijepit tusukan tangkai bambu, lalu dibakar di atas bara arang. ",
+    "estimatePrice": "Rp25.000 - Rp40.000",
+    "id": "1",
+    "lat": -6.120694599999999,
+    "lon": 106.1501611,
+    "nama": "Sate Bandeng",
+    "photoUrl": "https://storage.googleapis.com/img-culinary/sate-bandeng.jpg"
+  }
 }
 ```
 
@@ -88,30 +92,23 @@ GET /api/culinary/search?name=<value>&lat=<value>&lon=<value>
 **Response:**
 
 ```json
-[
-  {
-    "id": "1",
-    "name": "Sate Bandeng",
-    "description": "Sate Bandeng adalah masakan tradisional khas Banten, Indonesia. Sate Bandeng dibuat dari ikan bandeng yang dihilangkan durinya, dagingnya dibumbui dan dimasukkan kembali ke kulitnya, lalu ditusuk atau dijepit tusukan tangkai bambu, lalu dibakar di atas bara arang.",
-    "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/sate-bandeng-_shutterstock_1893274882.jpg",
-    "estimatePrice": "Rp25.000 - Rp40.000",
-    "lat": -6.120694599999999,
-    "lon": 106.1501611
-  },
-  {
-    "id": "3",
-    "name": "Bandeng Presto",
-    "description": "Bandeng Presto adalah ikan bandeng yang dimasak dengan presto hingga tulang-tulangnya lunak dan dapat dimakan.",
-    "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/bandeng-presto.jpg",
-    "estimatePrice": "Rp20.000 - Rp35.000",
-    "lat": -6.190694599999999,
-    "lon": 106.7501611
-  }
-]
+{
+  "listKuliner": [
+    {
+      "description": "Sate Bandeng adalah masakan tradisional khas Banten, Indonesia. Sate Bandeng dibuat dari ikan bandeng  yang dihilangkan durinya, dagingnya dibumbui dan dimasukkan kembali ke kulitnya, lalu ditusuk atau dijepit tusukan tangkai bambu, lalu dibakar di atas bara arang. ",
+      "estimatePrice": "Rp25.000 - Rp40.000",
+      "id": "1",
+      "lat": -6.120694599999999,
+      "lon": 106.1501611,
+      "nama": "Sate Bandeng",
+      "photoUrl": "https://storage.googleapis.com/img-culinary/sate-bandeng.jpg"
+    }
+  ]
+}
 ```
 
 > [!NOTE]
-> If you send a request with only the name parameter, it will display related data regardless of the distance from your location. If you also include the lat and lon parameters, it will display related data that is only within the vicinity of your location.
+> If you send a request with only the name parameter, it will display related data regardless of the distance from your location. However you can also include the lat and lon parameters, it will display related data that is only within the vicinity of your location.
 
 ### 4. `getUserRecommendation`
 

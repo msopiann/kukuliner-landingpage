@@ -4,51 +4,71 @@ title: Third API References
 
 # Third Party API References
 
-## Using Google Maps Distance Matrix API
+## Using Distance Matrix AI API
 
-### 1. Why Google Maps Distance Matrix API?
+### 1. Why Distance Matrix AI API?
 
-Initially, we considered using the Haversine formula to calculate distances. However, the Haversine formula calculates distances along a straight line, disregarding real-world road conditions such as turns, bends, and traffic patterns. This can lead to inaccurate distance estimates.
+Initially, we considered using the Haversine formula as the main methode to calculate distances. However, the Haversine formula calculates distances along a straight line, disregarding real-world road conditions such as turns, bends, and traffic patterns. This can lead to inaccurate distance estimates.
 
 For instance, the Haversine formula might calculate the distance between locations A and B as 700 meters. However, the actual driving distance between these locations could be 1 kilometer due to road bends.
 
 These inaccuracies can significantly impact our project, as we limit food recommendations to a 20-kilometer radius from the user's location. Using the Haversine formula could result in recommendations beyond the intended 20-kilometer radius, potentially leading to dissatisfied users.
 
-Therefore, we opted to utilize the Google Maps Distance Matrix API. This API takes into account real-world road conditions, providing more accurate distance estimates and ensuring that our food recommendations remain within the specified 20-kilometer radius.
+Therefore, we opted to utilize the Distance Matrix AI API. This API takes into account real-world road conditions, providing more accurate distance estimates and ensuring that our food recommendations remain within the specified 20-kilometer radius. This API can be said to be similar to the [Google Maps Distance Matrix API](https://developers.google.com/maps/documentation/distance-matrix/overview). For more details, you can read [this documentation about Distance Matrix AI API](https://distancematrix.ai/distance-matrix-api).
 
-| Feature                     | Haversine Formula                                 | Google Maps Distance Matrix API                                               |
+| Feature                     | Haversine Formula                                 | Distance Matrix AI API                                                        |
 | --------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------- |
 | Distance calculation        | Straight-line distance                            | Real-world road-based distance                                                |
 | Accuracy                    | Less accurate due to disregarding road conditions | More accurate due to considering road conditions                              |
 | Suitability for our project | Limited due to potential inaccuracies             | Well-suited due to higher accuracy and adherence to 20-kilometer radius limit |
 
-By employing the Google Maps Distance Matrix API, we can ensure that our project delivers accurate and reliable distance information, enhancing user satisfaction and project effectiveness.
+By employing the Distance Matrix AI API, we can ensure that our project delivers accurate and reliable distance information, enhancing user satisfaction and project effectiveness.
 
 ### 2. How We Use the API
 
 **Example using python:**
 
-```python {3} copy
-import googlemaps
+```python copy
+def get_distance_with_distancematrix_ai(latitude1, longitude1, latitude2, longitude2):
+    """Menggunakan DistanceMatrix.AI untuk menghitung jarak antara dua titik."""
+    try:
+        url = f"https://api.distancematrix.ai/maps/api/distancematrix/json?origins={latitude1},{longitude1}&destinations={latitude2},{longitude2}&key={DISTANCEMATRIX_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
 
-def get_distance_with_google_maps(latitude1, longitude1, latitude2, longitude2):
-    """Menggunakan Google Maps Distance Matrix API untuk menghitung jarak antara dua titik."""
-    gmaps = googlemaps.Client(key=os.getenv("GMAPS_API"))
-    origin = f"{latitude1},{longitude1}"
-    destination = f"{latitude2},{longitude2}"
-    distance_matrix = gmaps.distance_matrix(origin, destination)
+        # Log the API response for debugging
+        logger.debug(f"DistanceMatrix API response: {data}")
 
-    if distance_matrix["rows"][0]["elements"][0]["status"] == "ZERO_RESULTS":
+        if data.get("status") != "OK":
+            logger.error(
+                f"Error from DistanceMatrix API: {data.get('error_message', 'Unknown error')}"
+            )
+            return None
+
+        if "rows" not in data or not data["rows"]:
+            logger.error("No rows found in DistanceMatrix API response")
+            return None
+
+        if "elements" not in data["rows"][0] or not data["rows"][0]["elements"]:
+            logger.error("No elements found in DistanceMatrix API response rows")
+            return None
+
+        element = data["rows"][0]["elements"][0]
+        if element.get("status") != "OK":
+            logger.error(f"DistanceMatrix API element error: {element.get('status')}")
+            return None
+
+        distance = element["distance"]["value"] / 1000
+        return distance
+    except Exception as e:
+        logger.error(f"Error calculating distance: {e}")
         return None
-
-    distance = distance_matrix["rows"][0]["elements"][0]["distance"]["value"] / 1000
-    return distance
 ```
 
 **Base URL and Endpoint:**
 
-```sh {3} copy
-https://maps.googleapis.com/maps/api/distancematrix/json?destinations=<latitude_value>,<longitude_value>&origins=<latitude_value>,<longitude_value>&travelMode=driving&key=<API_KEY>
+```sh copy
+https://api.distancematrix.ai/maps/api/distancematrix/json?origins=<origin_location_1|origin_location_2|...|origin_location_n>&destinations=<destination_location_1|destination_location_2|...|destination_location_n>&key=<your_access_token>
 ```
 
 **Parameters:**
@@ -61,20 +81,26 @@ https://maps.googleapis.com/maps/api/distancematrix/json?destinations=<latitude_
 
 ```json
 {
-  "destination_addresses": ["Kota New York, New York, Amerika Serikat"],
-  "origin_addresses": ["Washington, Distrik Kolombia, Amerika Serikat"],
+  "destination_addresses": [
+    "St John's Church, North End Rd, London SW6 1PB, United Kingdom"
+  ],
+  "origin_addresses": [
+    "Westminster Abbey, 20 Deans Yd, London SW1P 3PA, United Kingdom"
+  ],
   "rows": [
     {
       "elements": [
         {
           "distance": {
-            "text": "362 km",
-            "value": 361717
+            "text": "7.3 km",
+            "value": 7346
           },
           "duration": {
-            "text": "3 jam 50 min",
-            "value": 13826
+            "text": "23 mins",
+            "value": 1401
           },
+          "origin": "Westminster Abbey, 20 Deans Yd, Westminster, London SW1P 3PA, United Kingdom",
+          "destination": "St John's Church, North End Rd, Fulham, London SW6 1PB, United Kingdom",
           "status": "OK"
         }
       ]
@@ -84,27 +110,19 @@ https://maps.googleapis.com/maps/api/distancematrix/json?destinations=<latitude_
 }
 ```
 
-**Example of Response (if failed):**
+### 3. Advantage of Using This API
 
-```json
-{
-  "destination_addresses": ["-6.143376,106.149564"],
-  "origin_addresses": ["6.143376,106.149564"],
-  "rows": [
-    {
-      "elements": [
-        {
-          "status": "ZERO_RESULTS"
-        }
-      ]
-    }
-  ],
-  "status": "OK"
-}
-```
-
-### 3. Benefits of Using This API
-
-- **Accuracy:** Google Maps leverages real-world data to provide accurate distance calculations.
+- **Accuracy:** Distance Matrix AI leverages real-world data to provide accurate distance calculations.
 - **Efficiency:** The API offers a fast and reliable way to retrieve distances.
-- **Flexibility:** The API supports various travel modes (driving, walking, etc.) which can be incorporated in the future.
+- **Flexibility:** The API supports various travel modes which can be incorporated in the future.
+
+### 4. Disadvantage of Using This API
+
+Due to limited development costs, we use this API with a free plan which causes the following shortcomings:
+
+- **Usage Limits:** Free plans have lower usage limits in terms of the number of requests per day or per month.
+- **Rate Limits:** The rate at which we can make requests (requests per second) might be lower we the free plan, potentially leading to slower response times for end-users if many requests are made simultaneously.
+
+### 5. Alternative Solution
+
+Because the free plan has a usage limit of 1000/month, we overcome this usage limit by creating a fallback so that if the Distance Matrix fails to execute, the distance calculation will be carried out using the logic of Haversine formula algorithm that we have created. However, as we said before, this Haversine has several drawbacks, for more details, you can read [this section](#1-why-distance-matrix-ai-api) again.
