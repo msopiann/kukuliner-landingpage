@@ -128,24 +128,26 @@ GET /api/culinary/recommendations?lat=<value>&lon=<value>
 **Response:**
 
 ```json
-[
-  {
-    "id": "4",
-    "name": "Bakso Malang",
-    "description": "Bakso Malang adalah bakso khas Malang yang disajikan dengan tahu, siomay, dan mie kuning.",
-    "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/bakso-malang.jpg",
-    "estimatePrice": "Rp15.000 - Rp30.000",
-    "lat": -7.120694599999999,
-    "lon": 112.7501611
-  },
-  {
-    "id": "5",
-    "name": "Mie Ayam Jakarta",
-    "description": "Mie Ayam Jakarta adalah mie ayam dengan tambahan bakso, pangsit, dan sayuran segar.",
-    "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/mie-ayam-jakarta.jpg",
-    "estimatePrice": "Rp20.000 - Rp35.000",
-    "lat": -6.210694599999999,
-    "lon": 106.8501611
-  }
-]
+{
+  "listKuliner": [
+    {
+      "id": "4",
+      "name": "Bakso Malang",
+      "description": "Bakso Malang adalah bakso khas Malang yang disajikan dengan tahu, siomay, dan mie kuning.",
+      "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/bakso-malang.jpg",
+      "estimatePrice": "Rp15.000 - Rp30.000",
+      "lat": -7.120694599999999,
+      "lon": 112.7501611
+    },
+    {
+      "id": "5",
+      "name": "Mie Ayam Jakarta",
+      "description": "Mie Ayam Jakarta adalah mie ayam dengan tambahan bakso, pangsit, dan sayuran segar.",
+      "photoUrl": "https://ik.imagekit.io/tvlk/blog/2021/06/mie-ayam-jakarta.jpg",
+      "estimatePrice": "Rp20.000 - Rp35.000",
+      "lat": -6.210694599999999,
+      "lon": 106.8501611
+    }
+  ]
+}
 ```
